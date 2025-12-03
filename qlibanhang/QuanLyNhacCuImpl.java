@@ -32,9 +32,9 @@ public class QuanLyNhacCuImpl implements IQuanLyNhacCu, IReadWrite {
     }
 
     @Override
-    public NhacCu timKiemNhacCu(String ten) {
+    public NhacCu timKiemNhacCu(String ma) {
         for (NhacCu nc : danhSachNhacCu) {
-            if (nc.getTenNhacCu().equalsIgnoreCase(ten)) {
+            if (nc.getMaNhacCu().equalsIgnoreCase(ma)) {
                 return nc;
             }
         }
