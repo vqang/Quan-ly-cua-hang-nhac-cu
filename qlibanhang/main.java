@@ -98,17 +98,14 @@ public class main {
             System.out.println("-> Tim thay: " + nc.getTenNhacCu());
             System.out.println("Moi nhap thong tin moi (Nhan Enter neu khong muon doi):");
 
-            // 1. Sua Ten
             System.out.print("Ten moi (" + nc.getTenNhacCu() + "): ");
             String tenMoi = sc.nextLine();
             if (!tenMoi.isEmpty()) nc.setTenNhacCu(tenMoi);
 
-            // 2. Sua Hang SX
             System.out.print("Hang SX moi (" + nc.getHangSX() + "): ");
             String hangMoi = sc.nextLine();
             if (!hangMoi.isEmpty()) nc.setHangSX(hangMoi);
 
-            // 3. Sua Gia co ban
             System.out.print("Gia co ban moi (" + nc.getGiaCoBan() + "): ");
             String giaMoiStr = sc.nextLine();
             if (!giaMoiStr.isEmpty()) {
@@ -127,7 +124,7 @@ public class main {
 
     public static void capNhatSoLuongTonKho() {
         System.out.println("\n--- CAP NHAT SO LUONG KHO ---");
-        System.out.print("Nhap MA nhac cu can chinh so luong: "); // Doi tu Ten -> Ma
+        System.out.print("Nhap MA nhac cu can chinh so luong: "); 
         String maTim = sc.nextLine();
         
         NhacCu nc = qlNhacCu.timKiemNhacCu(maTim);
@@ -225,16 +222,20 @@ public class main {
     public static void menuNhanVien() {
         while (true) {
             System.out.println("\n--- [ QUAN LY NHAN VIEN ] ---");
-            System.out.println("1. Them nhan vien");
-            System.out.println("2. Xoa nhan vien (Theo Ma)");
-            System.out.println("3. Tim kiem nhan vien (Theo Ma)");
-            System.out.println("4. Hien thi danh sach");
-            System.out.println("0. Quay lai");
+            System.out.println("1. Them nhan vien moi");
+            System.out.println("2. Xoa nhan vien ");
+            System.out.println("3. Cap nhat thong tin "); 
+            System.out.println("4. Tim kiem nhan vien ");
+            System.out.println("5. Hien thi danh sach");
+            System.out.println("6. Ghi du lieu ra file");            
+            System.out.println("0. Quay lai menu chinh");
             System.out.print("-> Chon: ");
-            int chon = Integer.parseInt(sc.nextLine());
+            
+            int chon = 0;
+            try { chon = Integer.parseInt(sc.nextLine()); } catch(Exception e) {}
 
             switch (chon) {
-                case 1:
+                case 1: 
                     System.out.print("Ho: "); String ho = sc.nextLine();
                     System.out.print("Ten: "); String ten = sc.nextLine();
                     System.out.print("Gioi tinh: "); String gt = sc.nextLine();
@@ -245,42 +246,75 @@ public class main {
                     System.out.print("Ma NV: "); String ma = sc.nextLine();
                     System.out.print("Chuc vu: "); String cv = sc.nextLine();
                     System.out.print("Luong: "); double luong = Double.parseDouble(sc.nextLine());
+                    
                     NhanVien nv = new NhanVien(ho, ten, gt, ns, sdt, email, dc, ma, cv, luong);
                     qlNhanVien.themNhanVien(nv);
-                    System.out.println("Them nhan vien xong!");
                     break;
-                case 2:
+
+                case 2: 
                     System.out.print("Nhap Ma NV can xoa: ");
-                    if(qlNhanVien.xoaNhanVien(sc.nextLine())) System.out.println("Da xoa!");
-                    else System.out.println("Khong tim thay Ma NV.");
+                    if(qlNhanVien.xoaNhanVien(sc.nextLine())) System.out.println("-> Da xoa!");
+                    else System.out.println("-> Khong tim thay Ma NV.");
                     break;
-                case 3:
+
+                case 3: 
+                    System.out.print("Nhap Ma NV can sua: ");
+                    NhanVien nvTim = qlNhanVien.timKiemNhanVien(sc.nextLine());
+                    if (nvTim != null) {
+                        System.out.println("Tim thay: " + nvTim.getTen());
+                        System.out.print("SDT moi (" + nvTim.getSDT() + "): ");
+                        String sdtMoi = sc.nextLine();
+                        if(!sdtMoi.isEmpty()) nvTim.setSdt(sdtMoi);
+
+                        System.out.print("Luong moi (" + nvTim.getLuong() + "): ");
+                        String luongMoi = sc.nextLine();
+                        if(!luongMoi.isEmpty()) nvTim.setLuong(Double.parseDouble(luongMoi));
+                        
+                        System.out.println("-> Cap nhat xong!");
+                    } else {
+                        System.out.println("-> Khong tim thay!");
+                    }
+                    break;
+
+                case 4: 
                     System.out.print("Nhap Ma NV can tim: ");
                     NhanVien kq = qlNhanVien.timKiemNhanVien(sc.nextLine());
                     if (kq != null) kq.hienThiThongTin();
-                    else System.out.println("Khong tim thay!");
+                    else System.out.println("-> Khong tim thay!");
                     break;
-                case 4: qlNhanVien.hienThiDanhSach(); break;
+
+                case 5: 
+                    qlNhanVien.hienThiDanhSach();
+                    break;
+
+                case 6: 
+                    qlNhanVien.WriteData("DanhSachNhanVien.txt");
+                    break;
+
                 case 0: return;
                 default: System.out.println("Chon sai!");
             }
         }
     }
 
-    // 3. MENU QUAN LY KHACH HANG (GIU NGUYEN)
+    // 3. MENU QUAN LY KHACH HANG 
     public static void menuKhachHang() {
         while (true) {
             System.out.println("\n--- [ QUAN LY KHACH HANG ] ---");
-            System.out.println("1. Them khach hang");
-            System.out.println("2. Xoa khach hang (Theo Ma)");
-            System.out.println("3. Tim kiem khach hang (Theo Ma)");
-            System.out.println("4. Hien thi danh sach");
-            System.out.println("0. Quay lai");
+            System.out.println("1. Them khach hang moi");
+            System.out.println("2. Xoa khach hang ");
+            System.out.println("3. Cap nhat thong tin "); 
+            System.out.println("4. Tim kiem khach hang ");
+            System.out.println("5. Hien thi danh sach");
+            System.out.println("6. Ghi du lieu ra file");               
+            System.out.println("0. Quay lai menu chinh");
             System.out.print("-> Chon: ");
-            int chon = Integer.parseInt(sc.nextLine());
+            
+            int chon = 0;
+            try { chon = Integer.parseInt(sc.nextLine()); } catch(Exception e) {}
 
             switch (chon) {
-                case 1:
+                case 1: 
                     System.out.print("Ho: "); String ho = sc.nextLine();
                     System.out.print("Ten: "); String ten = sc.nextLine();
                     System.out.print("Gioi tinh: "); String gt = sc.nextLine();
@@ -290,22 +324,51 @@ public class main {
                     System.out.print("Dia chi: "); String dc = sc.nextLine();
                     System.out.print("Ma KH: "); String ma = sc.nextLine();
                     System.out.print("Diem tich luy: "); int diem = Integer.parseInt(sc.nextLine());
+                    
                     KhachHang kh = new KhachHang(ho, ten, gt, ns, sdt, email, dc, ma, diem);
                     qlKhachHang.themKhachHang(kh);
-                    System.out.println("Them khach hang xong!");
                     break;
-                case 2:
+
+                case 2: 
                     System.out.print("Nhap Ma KH can xoa: ");
-                    if(qlKhachHang.xoaKhachHang(sc.nextLine())) System.out.println("Da xoa!");
-                    else System.out.println("Khong tim thay Ma KH.");
+                    if(qlKhachHang.xoaKhachHang(sc.nextLine())) System.out.println("-> Da xoa!");
+                    else System.out.println("-> Khong tim thay Ma KH.");
                     break;
-                case 3:
+
+                case 3: 
+                    System.out.print("Nhap Ma KH can sua: ");
+                    KhachHang khTim = qlKhachHang.timKiemKhachHang(sc.nextLine());
+                    if (khTim != null) {
+                        System.out.println("Tim thay: " + khTim.getTen());
+                        System.out.print("SDT moi (" + khTim.getSDT() + "): ");
+                        String sdtMoi = sc.nextLine();
+                        if(!sdtMoi.isEmpty()) khTim.setSdt(sdtMoi);
+
+                        System.out.print("Diem tich luy moi (" + khTim.getDiemTichLuy() + "): ");
+                        String diemMoi = sc.nextLine();
+                        if(!diemMoi.isEmpty()) khTim.setDiemTichLuy(Integer.parseInt(diemMoi));
+                        
+                        System.out.println("-> Cap nhat xong!");
+                    } else {
+                        System.out.println("-> Khong tim thay!");
+                    }
+                    break;
+
+                case 4: 
                     System.out.print("Nhap Ma KH can tim: ");
                     KhachHang kq = qlKhachHang.timKiemKhachHang(sc.nextLine());
                     if (kq != null) kq.hienThiThongTin();
-                    else System.out.println("Khong tim thay!");
+                    else System.out.println("-> Khong tim thay!");
                     break;
-                case 4: qlKhachHang.hienThiDanhSach(); break;
+
+                case 5: 
+                    qlKhachHang.hienThiDanhSach();
+                    break;
+
+                case 6: 
+                    qlKhachHang.WriteData("DanhSachKhachHang.txt");
+                    break;
+
                 case 0: return;
                 default: System.out.println("Chon sai!");
             }

@@ -1,6 +1,9 @@
 package qlibanhang;
 
 import java.util.ArrayList;
+import java.io.BufferedWriter; 
+import java.io.FileWriter;     
+import java.io.IOException;   
 
 public class QuanLyKhachHangImpl implements IQuanLyKhachHang,IReadWrite {
     private ArrayList<KhachHang> danhSachKhachHang;
@@ -35,7 +38,21 @@ public class QuanLyKhachHangImpl implements IQuanLyKhachHang,IReadWrite {
     }
     @Override
     public void WriteData(String tenFile) {
-        System.out.println("Dang ghi du lieu vao file: " + tenFile);
+        try {
+            FileWriter fw = new FileWriter(tenFile);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            for (KhachHang kh : danhSachKhachHang) {
+                bw.write(kh.toString());
+                bw.newLine();
+            }
+
+            bw.close();
+            fw.close();
+            System.out.println("-> Ghi file KHACH HANG thanh cong! (" + tenFile + ")");
+        } catch (IOException e) {
+            System.out.println("-> Loi ghi file: " + e.getMessage());
+        }
     }
     
 }

@@ -1,6 +1,9 @@
 package qlibanhang;
 
 import java.util.ArrayList;
+import java.io.BufferedWriter; 
+import java.io.FileWriter;     
+import java.io.IOException;    
 
 public class QuanLyNhanVienImpl implements IQuanLyNhanVien,IReadWrite {
     private ArrayList<NhanVien> danhSachNhanVien;
@@ -35,6 +38,20 @@ public class QuanLyNhanVienImpl implements IQuanLyNhanVien,IReadWrite {
     }
     @Override
     public void WriteData(String tenFile) {
-        System.out.println("Ghi danh sach du lieu vao file: " + tenFile);
+        try {
+            FileWriter fw = new FileWriter(tenFile);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            for (NhanVien nv : danhSachNhanVien) {
+                bw.write(nv.toString());
+                bw.newLine();
+            }
+
+            bw.close();
+            fw.close();
+            System.out.println("-> Ghi file NHAN VIEN thanh cong! (" + tenFile + ")");
+        } catch (IOException e) {
+            System.out.println("-> Loi ghi file: " + e.getMessage());
+        }
     }
 }

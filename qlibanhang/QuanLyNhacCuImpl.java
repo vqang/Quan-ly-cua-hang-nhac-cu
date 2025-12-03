@@ -1,5 +1,7 @@
 package qlibanhang;
-
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class QuanLyNhacCuImpl implements IQuanLyNhacCu, IReadWrite {
@@ -65,6 +67,24 @@ public class QuanLyNhacCuImpl implements IQuanLyNhacCu, IReadWrite {
 
     @Override
     public void WriteData(String tenFile) {
-        System.out.println("Ghi danh sach nhac cu vao file: " + tenFile);
+        try {
+            // Tao luong ghi file
+            FileWriter fw = new FileWriter(tenFile);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            // Duyet qua danh sach va ghi tung dong
+            for (NhacCu nc : danhSachNhacCu) {
+                bw.write(nc.toString()); // Ghi noi dung cua nhac cu
+                bw.newLine();            // Xuong dong
+            }
+
+            // Dong luong ghi file lai (Rat quan trong)
+            bw.close();
+            fw.close();
+            
+            System.out.println("-> Ghi file THANH CONG! Ten file: " + tenFile);
+        } catch (IOException e) {
+            System.out.println("-> Loi khi ghi file: " + e.getMessage());
+        }
     }
 }
